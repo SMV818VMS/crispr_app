@@ -41,26 +41,10 @@
     <input class="search form-control" placeholder="Search (subsequence/gene)" /></input><br />
     <a class="export"><button type="button" class="btn btn-info">Download Table</button></a>
 <hr>
-{% if not dataframe.empty %}
+<p>Number of rows: {{dataframe.shape[0]}}</p>
 <div id="dvData">
-<table id="crispr_table" class="table table-striped">
-    <tr>
-        {% for column in dataframe.columns %}
-        <td><span class='theader'>{{ column }}</span></td>
-        {% endfor %}
-    </tr>
-    <tbody class="list">
-    {% for index, row in dataframe.iterrows() %}
-        <tr>
-            {% for column in dataframe.columns %}
-            <td class="{{column}}">{{ row[column] }}</td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% include "table.html" %}
 </div>
-{% endif %}
 </div>
 </body>
 <script src="{{url_for('main_app.static', filename='js/jquery-1.11.3.min.js')}}"></script>
@@ -68,7 +52,8 @@
 <script src="{{url_for('main_app.static', filename='js/exportTable.js')}}"></script>
 <script>
 var options = {
-    valueNames: [{% for column in dataframe.columns %} '{{column}}'{% if not loop.last %},{% endif %}{% endfor %}]
+    valueNames: [{% for column in dataframe.columns %} '{{column}}'{% if not loop.last %},{% endif %}{% endfor %}],
+    page: [{{dataframe.shape[0]}}]
 };
 
 var crisprTable = new List('crispr_table_div', options);
