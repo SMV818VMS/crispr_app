@@ -10,7 +10,7 @@
     <tr>
         <td>{{index}}</td>
         {% for item in row %}
-        <td>{{item}}</td>
+        <td class="{{dataframe.columns[loop.index-1]}}">{{item}}</td>
         {% endfor %}
     </tr>
     {% endfor %}
