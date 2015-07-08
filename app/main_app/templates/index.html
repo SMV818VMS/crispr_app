@@ -63,8 +63,8 @@
 {% endif %}
 </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://listjs.com/no-cdn/list.js"></script>
+<script src="{{url_for('main_app.static', filename='js/jquery-1.11.3.min.js')}}"></script>
+<script src="{{url_for('main_app.static', filename='js/list.min.js')}}"></script>
 <script src="{{url_for('main_app.static', filename='js/exportTable.js')}}"></script>
 <script>
 var options = {
