@@ -11,7 +11,7 @@
     <div class="col-md-3">
         <label for="columnSelect">Select column to filter</label>
         <select name="columnSelect" id="columnSelect" class="form-control">
-            <option value="" selected>None</option>
+            <option value="">None</option>
             <option value="pos_bef_PAM">pos_bef_PAM</option>
             <option value="41_bef17">41_bef17</option>
             <option value="41_aft">41_aft</option>
@@ -24,11 +24,11 @@
     </div>
     <div class="col-md-3">
         <label for="minValue">Minimum value</label>
-        <input class="form-control" id="minInput" name="minValue" type="text"></input>
+        <input class="form-control" id="minInput" name="minValue" type="text" value="{{inputs.min}}"></input>
     </div>
     <div class="col-md-3">
         <label for="maxValue">Maximum value</label>
-        <input class="form-control" id="maxInput" name="maxValue" type="text"></input>
+        <input class="form-control" id="maxInput" name="maxValue" type="text" value="{{inputs.max}}"></input>
     </div>
     <div class="col-md-3">
         <label>Filter/Clear</label><br/>
@@ -38,54 +38,78 @@
 </div>
 <hr>
 <div id="crispr_table_div">
-    <input class="search form-control" placeholder="Search (subsequence/gene)" /></input><br />
-    <a class="export"><button type="button" class="btn btn-info">Download Table</button></a>
+    <!-- <input class="search form&#45;control" placeholder="Search (subsequence/gene)" /></input><br /> -->
+    <a class="export"><button type="button" class="btn btn-info">Download Filtered Table</button></a>
 <hr>
-<p>Number of rows: {{dataframe.shape[0]}}</p>
+
+<!-- Page controls -->
+{% include 'page_controls.html' %}
+<!-- / Page controls -->
+
+<br/><br/>
 <div id="dvData">
 {% include "table.html" %}
 </div>
 </div>
+<!-- Page controls -->
+{% include 'page_controls.html' %}
+<!-- / Page controls -->
 </body>
 <script src="{{url_for('main_app.static', filename='js/jquery-1.11.3.min.js')}}"></script>
 <script src="{{url_for('main_app.static', filename='js/list.min.js')}}"></script>
-<script src="{{url_for('main_app.static', filename='js/exportTable.js')}}"></script>
 <script>
-var options = {
-    valueNames: [{% for column in dataframe.columns %} '{{column}}'{% if not loop.last %},{% endif %}{% endfor %}],
-    page: [{{dataframe.shape[0]}}]
-};
 
-var crisprTable = new List('crispr_table_div', options);
 
 var columnSelect = document.getElementById("columnSelect");
 var minInput = document.getElementById("minInput");
 var maxInput = document.getElementById("maxInput");
+var url = "/crispr";
+
+var orderby = "{{inputs.orderby}}";
+var filterby = "{{inputs.filterby}}";
+var min = "{{inputs.min}}";
+var max = "{{inputs.max}}";
+var page = {{inputs.page}};
+
+
+{% if inputs.asc != "" %}
+var asc = "{{inputs.asc}}" == "False" ? "True" : "False"
+{% else %}
+var asc = false;
+{% endif %}
+
+// set selected value
+if ("{{inputs.filterby}}") {
+    for(var i = 0, j = columnSelect.options.length; i < j; ++i) {
+        if(columnSelect.options[i].innerHTML === "{{inputs.filterby}}") {
+           columnSelect.selectedIndex = i;
+           break;
+        }
+    }
+}
 
 var updateFilter = function() {
-    var column = columnSelect.options[columnSelect.selectedIndex].value;
-    if (!column || !minInput.value || !maxInput.value) {
+    filterby = columnSelect.options[columnSelect.selectedIndex].value;
+    if (!filterby || !minInput.value || !maxInput.value) {
         // don't filter anything
-        crisprTable.filter();
+        window.location = "/crispr";
     } else {
         // update filter
-        min = parseInt(minInput.value);
-        max = parseInt(maxInput.value);
-
-        crisprTable.filter(function(item) {
-                val = parseInt(item.values()[column]);
-                return (val >= min) &&
-                       (val <= max)
-        });
+        min = minInput.value;
+        max = maxInput.value;
+        updateTable();
     }
 };
 
+var updateTable = function() {
+    url = "/crispr?filterby=" + filterby + "&min=" + min + "&max=" + max + "&orderby=" + orderby + "&asc=" + asc + "&page=" + page;
+    window.location = url;
+}
+
 $(".theader").each(function(index) {
-        this.order = 'desc'
         this.onclick = function() {
-            options = { order: this.order };
-            this.order = this.order == 'asc' ? 'desc' : 'asc';
-            crisprTable.sort(this.innerHTML, options)
+            orderby = this.innerHTML;
+            updateTable();
         }
 });
 
@@ -93,7 +117,26 @@ var clearFilter = function () {
     $("#minInput").val('');
     $("#maxInput").val('');
     updateFilter();
+};
+
+var nextPage = function () {
+    page += 1;
+    updateTable();
 }
 
+var previousPage = function () {
+    page -= 1;
+    updateTable();
+}
+
+var firstPage = function () {
+    page = 0;
+    updateTable();
+}
+
+var lastPage = function () {
+    page = parseInt({{inputs.table_size}} / {{inputs.rows_per_page}});
+    updateTable();
+}
 </script>
 </html>

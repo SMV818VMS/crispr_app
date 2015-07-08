@@ -1,9 +1,9 @@
 body {
     margin: auto;
+    padding: 2em;
     width: 70%;
     border:3px solid #0bb0c1;
     border-radius: 15px;
-    padding: 10px;
 }
 
 /* a.export, a.export:visited { */
