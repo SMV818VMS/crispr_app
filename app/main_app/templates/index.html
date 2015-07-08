@@ -1,45 +1,52 @@
 <!doctype html>
 <html>
+<head>
+<link rel="stylesheet" type="text/css" href="{{url_for('main_app.static', filename='css/bootstrap.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url_for('main_app.static', filename='css/crispr_app.css')}}">
+</head>
 <body>
-<h1>Crispr App Main Page</h1>
-<button id="export_button" type="button">Download as txt</button>
-<button type="button">
-    <a href="table" download="table.txt">Download table</a>
-</button>
-<br/>
-<br/>
-
+<h1 class="text-center">Crispr App Main Page</h1>
+<hr>
+<div class="row">
+    <div class="col-md-3">
+        <label for="columnSelect">Select column to filter</label>
+        <select name="columnSelect" id="columnSelect" class="form-control">
+            <option value="" selected>None</option>
+            <option value="pos_bef_PAM">pos_bef_PAM</option>
+            <option value="41_bef17">41_bef17</option>
+            <option value="41_aft">41_aft</option>
+            <option value="total41">total41</option>
+            <option value="7_bef17">7_bef17</option>
+            <option value="7_aft17">7_aft17</option>
+            <option value="total7">total7</option>
+            <option value="total">total</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label for="minValue">Minimum value</label>
+        <input class="form-control" id="minInput" name="minValue" type="text"></input>
+    </div>
+    <div class="col-md-3">
+        <label for="maxValue">Maximum value</label>
+        <input class="form-control" id="maxInput" name="maxValue" type="text"></input>
+    </div>
+    <div class="col-md-3">
+        <label>Filter/Clear</label><br/>
+        <button class="btn btn-default" type="button" onclick="updateFilter();">Filter</button>
+        <button class="btn btn-default" type="button" onclick="clearFilter();">Clear</button>
+    </div>
+</div>
+<hr>
 <div id="crispr_table_div">
-<input class="search" placeholder="Search (subsequence/gene)" />
-  <button class="sort" data-sort="total41">
-          Sort by total41
-  </button>
-</input>
-<br/><br/>
-<label for="columnSelect">Select column to filter</label>
-<select name="columnSelect" id="columnSelect">
-    <option value="" selected>None</option>
-    <option value="pos_bef_PAM">pos_bef_PAM</option>
-    <option value="41_bef17">41_bef17</option>
-    <option value="41_aft">41_aft</option>
-    <option value="total41">total41</option>
-    <option value="7_bef17">7_bef17</option>
-    <option value="7_aft17">7_aft17</option>
-    <option value="total7">total7</option>
-    <option value="total">total</option>
-</select>
-<br/>
-<label for="minValue">Minimum value</label><br/>
-<input id="minInput" name="minValue" type="text"></input><br/>
-<label for="maxValue">Maximum value</label><br/>
-<input id="maxInput" name="maxValue" type="text"></input><br/>
-<button type="button" onclick="updateFilter();">Filter</button>
-
+    <input class="search form-control" placeholder="Search (subsequence/gene)" /></input><br />
+    <a class="export"><button type="button" class="btn btn-info">Download Table</button></a>
+<hr>
 {% if not dataframe.empty %}
-<table id="crispr_table">
+<div id="dvData">
+<table id="crispr_table" class="table table-striped">
     <tr>
         {% for column in dataframe.columns %}
-        <th>{{ column }}</th>
+        <td><span class='theader'>{{ column }}</span></td>
         {% endfor %}
     </tr>
     <tbody class="list">
@@ -52,13 +59,13 @@
     {% endfor %}
     </tbody>
 </table>
+</div>
 {% endif %}
 </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://listjs.com/no-cdn/list.js"></script>
-<script src="{{url_for('main_app.static', filename='js/tableExport.js')}}"></script>
-<script src="{{url_for('main_app.static', filename='js/jquery.base64.js')}}"></script>
+<script src="{{url_for('main_app.static', filename='js/exportTable.js')}}"></script>
 <script>
 var options = {
     valueNames: [{% for column in dataframe.columns %} '{{column}}'{% if not loop.last %},{% endif %}{% endfor %}]
@@ -88,9 +95,20 @@ var updateFilter = function() {
     }
 };
 
-document.getElementById("export_button").onclick = function() {
-    var table = $('#crispr_table');
-    table.tableExport({tableName: 'crispr_table', type: 'excel', escape: 'false'});
+$(".theader").each(function(index) {
+        this.order = 'desc'
+        this.onclick = function() {
+            options = { order: this.order };
+            this.order = this.order == 'asc' ? 'desc' : 'asc';
+            crisprTable.sort(this.innerHTML, options)
+        }
+});
+
+var clearFilter = function () {
+    $("#minInput").val('');
+    $("#maxInput").val('');
+    updateFilter();
 }
+
 </script>
 </html>

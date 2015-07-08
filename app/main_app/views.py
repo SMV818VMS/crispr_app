@@ -10,7 +10,7 @@ main_app = Blueprint('main_app', __name__,
 def main():
     path_to_table = '/home/alvaro/Repos/crispr_app/app/main_app/static/total_processed.txt'
     df = pd.read_csv(path_to_table, sep='\t', index_col=None)
-    return render_template("index.html", dataframe=df[:100])
+    return render_template("index.html", dataframe=df)
 
 @main_app.route('/sayhello/<name>')
 def sayhello(name):
