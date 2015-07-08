@@ -39,7 +39,8 @@
 <hr>
 <div id="crispr_table_div">
     <!-- <input class="search form&#45;control" placeholder="Search (subsequence/gene)" /></input><br /> -->
-    <a class="export"><button type="button" class="btn btn-info">Download Filtered Table</button></a>
+    <button type="button" class="btn btn-info" onclick="downloadTable();">Download Filtered Table</button>
+    <a id="download_link" download="table.csv" style="visibility: hidden;"></a>
 <hr>
 
 <!-- Page controls -->
@@ -51,6 +52,7 @@
 {% include "table.html" %}
 </div>
 </div>
+<hr>
 <!-- Page controls -->
 {% include 'page_controls.html' %}
 <!-- / Page controls -->
@@ -63,7 +65,6 @@
 var columnSelect = document.getElementById("columnSelect");
 var minInput = document.getElementById("minInput");
 var maxInput = document.getElementById("maxInput");
-var url = "/crispr";
 
 var orderby = "{{inputs.orderby}}";
 var filterby = "{{inputs.filterby}}";
@@ -137,6 +138,15 @@ var firstPage = function () {
 var lastPage = function () {
     page = parseInt({{inputs.table_size}} / {{inputs.rows_per_page}});
     updateTable();
+}
+
+var downloadTable = function () {
+    link = $("#download_link");
+    url = "/crispr/download?filterby=" + filterby + "&min=" + min + "&max=" + max + "&orderby=" + orderby + "&asc=" + asc
+    link.attr('href', url);
+    alert(url)
+    // window.location = url;
+    link[0].click();
 }
 </script>
 </html>
