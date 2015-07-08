@@ -12,4 +12,4 @@ app = Flask(__name__)
 
 # Register Blueprints
 # -------------------------------------------------------------------
-app.register_blueprint(main_app, url_prefix='')
+app.register_blueprint(main_app, url_prefix='/crispr')
