@@ -67,6 +67,7 @@ def main():
                     inputs={'filterby': col_filter, 'min': str(minimum),
                             'max': maximum, 'page': page, 'asc': asc,
                             'rows_per_page': ROWS_PER_PAGE,
+                            'orderby': col_order,
                             'page_span': (from_row, to_row),
                             'table_size': table_size})
 

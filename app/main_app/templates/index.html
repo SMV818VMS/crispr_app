@@ -59,6 +59,7 @@
 </body>
 <script src="{{url_for('main_app.static', filename='js/jquery-1.11.3.min.js')}}"></script>
 <script src="{{url_for('main_app.static', filename='js/list.min.js')}}"></script>
+<script src="{{url_for('main_app.static', filename='js/jquery.cookie.js')}}"></script>
 <script>
 
 
@@ -71,13 +72,12 @@ var filterby = "{{inputs.filterby}}";
 var min = "{{inputs.min}}";
 var max = "{{inputs.max}}";
 var page = {{inputs.page}};
+var asc = "False";
 
-
-{% if inputs.asc != "" %}
-var asc = "{{inputs.asc}}" == "False" ? "True" : "False"
-{% else %}
-var asc = false;
-{% endif %}
+var updateTable = function() {
+    url = "/crispr?filterby=" + filterby + "&min=" + min + "&max=" + max + "&orderby=" + orderby + "&asc=" + asc + "&page=" + page;
+    window.location = url;
+}
 
 // set selected value
 if ("{{inputs.filterby}}") {
@@ -102,14 +102,20 @@ var updateFilter = function() {
     }
 };
 
-var updateTable = function() {
-    url = "/crispr?filterby=" + filterby + "&min=" + min + "&max=" + max + "&orderby=" + orderby + "&asc=" + asc + "&page=" + page;
-    window.location = url;
-}
-
+// Asign listeners to each of the cells in table header
 $(".theader").each(function(index) {
+        // on click, sort the table...
         this.onclick = function() {
             orderby = this.innerHTML;
+            cookie = $.cookie(orderby);
+            if (!cookie) {
+                // set ascending order = false if no cookie
+                $.cookie(orderby, 'False');
+            } else {
+                // revert the value of the cookie
+                asc = cookie === "False" ? "True" : "False";
+                $.cookie(orderby, asc);
+            }
             updateTable();
         }
 });
