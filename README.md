@@ -27,6 +27,8 @@ Now point your browser to **http://localhost:5000**
 
 ----------------------
 
+### Resources
+
 1. [Flask framework](http://flask.pocoo.org/)
 
 2. [Modular Applications With Blueprints](http://flask.pocoo.org/docs/0.10/blueprints/)
