@@ -1,18 +1,12 @@
 <p>Showing rows <b>{{inputs.page_span[0]+1}}-{{inputs.page_span[1]}}</b> rows of a total of <b>{{inputs.table_size}}</b>.</p>
-<div class="row" style="text-align: center">
-    <div class="col-md-4">
-    <button {% if inputs.page == 0 %}disabled=true{% endif %} type="button" onclick="firstPage();" class="btn btn-default" style="float: left;">First Rows</button>
-    </div>
-    <div class="col-md-4">
-    <button {% if inputs.page == 0 %}disabled=true{% endif %}type="button" onclick="previousPage();" class="btn btn-primary">Previous {{ inputs.rows_per_page }}</button>
-    {% if dataframe.shape[0] < inputs.rows_per_page %}
-    {% set last_page = True %}
-    {% else %}
-    {% set last_page = False %}
-    {% endif %}
-    <button {% if last_page %}disabled=true{% endif %}type="button" onclick="nextPage();" class="btn btn-primary">Next {{ inputs.rows_per_page }}</button>
-    </div>
-    <div class="col-md-4">
-    <button {% if last_page %}disabled=true{% endif %}type="button" onclick="lastPage();" class="btn btn-default" style="float: right;">Last Rows</button>
-    </div>
-</div>
+<center>
+<button {% if inputs.page == 0 %}disabled=true{% endif %} type="button" onclick="firstPage();" class="btn btn-default">First Rows</button>
+<button {% if inputs.page == 0 %}disabled=true{% endif %}type="button" onclick="previousPage();" class="btn btn-primary">Previous {{ inputs.rows_per_page }}</button>
+{% if dataframe.shape[0] < inputs.rows_per_page %}
+{% set last_page = True %}
+{% else %}
+{% set last_page = False %}
+{% endif %}
+<button {% if last_page %}disabled=true{% endif %}type="button" onclick="nextPage();" class="btn btn-primary">Next {{ inputs.rows_per_page }}</button>
+<button {% if last_page %}disabled=true{% endif %}type="button" onclick="lastPage();" class="btn btn-default">Last Rows</button>
+</center>
