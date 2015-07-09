@@ -1,14 +1,12 @@
 from flask import Blueprint, render_template, send_from_directory, url_for, request, g
 import pandas as pd
-import os
 
 main_app = Blueprint('main_app', __name__,
                      template_folder='templates',
                      static_folder='static')
 
 ROWS_PER_PAGE = 500
-# PATH_TO_TABLE = '/home/alvaro/Repos/crispr_app/app/main_app/static/total_processed.txt'
-PATH_TO_TABLE = '/home/samiver/projects/webs/app/main_app/static/total_processed.txt'
+PATH_TO_TABLE = 'app/main_app/static/total_processed.txt'
 
 def modify_dataframe(dataframe, minimum='', maximum='',
                      col_filter='', col_order='', asc=''):
