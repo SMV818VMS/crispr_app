@@ -7,7 +7,8 @@ main_app = Blueprint('main_app', __name__,
                      static_folder='./static/')
 
 ROWS_PER_PAGE = 500
-PATH_TO_TABLE = '/home/alvaro/Repos/crispr_app/app/main_app/static/total_processed.txt'
+# PATH_TO_TABLE = '/home/alvaro/Repos/crispr_app/app/main_app/static/total_processed.txt'
+PATH_TO_TABLE = '/home/samiver/projects/webs/app/main_app/static/total_processed.txt'
 
 def modify_dataframe(dataframe, minimum='', maximum='',
                      col_filter='', col_order='', asc=''):
@@ -22,7 +23,7 @@ def modify_dataframe(dataframe, minimum='', maximum='',
             minimum = int(float(minimum))
             maximum = int(float(maximum))
         except:
-            return "Minimum value and maximum value must be numbers"
+            return df
 
     if col_filter != '' and minimum != '' and maximum != '':
         # filter the table
