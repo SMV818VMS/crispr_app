@@ -1,6 +1,5 @@
 <table id="crispr_table" class="table table-striped">
     <tr>
-        <td>index</td>
         {% for column in dataframe.columns %}
         <td><span class='theader'>{{ column }}</span></td>
         {% endfor %}
@@ -8,7 +7,6 @@
     <tbody class="list">
     {% for index, row in dataframe.iterrows() %}
     <tr>
-        <td>{{index}}</td>
         {% for item in row %}
         <td>{{item}}</td>
         {% endfor %}
