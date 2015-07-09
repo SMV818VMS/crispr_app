@@ -3,8 +3,8 @@ import pandas as pd
 import os
 
 main_app = Blueprint('main_app', __name__,
-                     template_folder='./templates/',
-                     static_folder='./static/')
+                     template_folder='templates',
+                     static_folder='static')
 
 ROWS_PER_PAGE = 500
 # PATH_TO_TABLE = '/home/alvaro/Repos/crispr_app/app/main_app/static/total_processed.txt'
