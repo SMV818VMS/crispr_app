@@ -1,0 +1,16 @@
+<table id="crispr_table" class="table table-striped">
+    <tr>
+        {% for column in dataframe.columns %}
+        <td><span class='theader'>{{ column }}</span></td>
+        {% endfor %}
+    </tr>
+    <tbody class="list">
+    {% for index, row in dataframe.iterrows() %}
+    <tr>
+        {% for item in row %}
+        <td>{{item}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

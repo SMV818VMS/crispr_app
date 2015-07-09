@@ -1,0 +1,22 @@
+body {
+    margin: auto;
+    padding: 1em;
+    width: 75%;
+    border:3px solid #0bb0c1;
+    border-radius: 15px;
+}
+
+/* a.export, a.export:visited { */
+/*     text-decoration: none; */
+/*     color:#000; */
+/*     background-color:#ddd; */
+/*     border: 1px solid #ccc; */
+/*     border-radius: 4px; */
+/*     padding:8px; */
+/*     cursor: pointer; */
+/* } */
+
+.theader {
+    font-weight: bold;
+    cursor: pointer;
+}
