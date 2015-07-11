@@ -58,7 +58,6 @@
 <!-- Page controls -->
 {% include 'page_controls.html' %}
 <!-- / Page controls -->
-</body>
 <script src="{{url_for('crispr_app.static', filename='js/jquery-1.11.3.min.js')}}"></script>
 <script src="{{url_for('crispr_app.static', filename='js/jquery.cookie.js')}}"></script>
 <script>
@@ -154,4 +153,6 @@ var downloadTable = function () {
     link[0].click();
 }
 </script>
+{% include 'google-analytics.html' %}
+</body>
 </html>
